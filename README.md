@@ -80,8 +80,6 @@ This triggers GitHub Actions to perform the following:
 
 ---
 
-### Task completed by **Ionatan Dumea** with the greatest pleasure for the awesome **QED team**. 🚀🎉
-
----
+Task completed by **Ionatan Dumea** with the greatest pleasure for the awesome **QED team**. 🚀🎉
 
 Happy Coding! 💻✨
