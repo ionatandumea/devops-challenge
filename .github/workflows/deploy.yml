@@ -10,6 +10,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
 
+    env:
+      DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/devops-challenge:latest
+
     steps:
       - uses: actions/checkout@v2
 
@@ -27,8 +30,8 @@ jobs:
       - name: Reopen container with the latest image
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            docker pull ${{ secrets.DOCKER_USERNAME }}/devops-challenge:latest 2>/dev/null
+            docker pull $DOCKER_IMAGE 2>/dev/null
             docker stop devops-challenge 2>/dev/null
             docker rm devops-challenge 2>/dev/null
-            docker run -d --name devops-challenge devops-challenge:latest
+            docker run -d --name devops-challenge $DOCKER_IMAGE
           EOF

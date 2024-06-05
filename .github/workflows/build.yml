@@ -9,6 +9,9 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    env:
+      DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/devops-challenge:latest
+
     steps:
       - uses: actions/checkout@v4
 
@@ -27,4 +30,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/devops-challenge:latest
+          tags: $DOCKER_IMAGE
