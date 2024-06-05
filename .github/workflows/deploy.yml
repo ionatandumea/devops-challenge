@@ -22,8 +22,8 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             echo ${{ secrets.DOCKER_TOKEN }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-            docker pull jondumea9/devops-challenge:latest
-            docker stop devops-challenge || true
-            docker rm devops-challenge || true
+            docker pull jondumea9/devops-challenge:latest 2>/dev/null
+            docker stop devops-challenge 2>/dev/null
+            docker rm devops-challenge 2>/dev/null
             docker run -d --name devops-challenge devops-challenge:latest
           EOF
