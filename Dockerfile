@@ -19,6 +19,7 @@ COPY --chown=node:node . /app
 # Change the user to the node user
 USER node
 
+# Expose the port the app runs on
 EXPOSE 3000
 
 # Start the web server
