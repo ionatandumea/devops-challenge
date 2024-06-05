@@ -1,3 +1,7 @@
+resource "aws_key_pair" "ssh-key" {
+  key_name   = "ssh-key"
+  public_key = var.ssh_public_key
+}
 resource "aws_instance" "ec2_instance" {
   ami                    = "ami-830c94e3"
   instance_type          = "t2.micro"
@@ -7,6 +11,8 @@ resource "aws_instance" "ec2_instance" {
 
   # Assign a public IP address to the EC2 instance.
   associate_public_ip_address = true
+
+  key_name = "ssh-key"
 
   # Execute ustom commands into the EC2 instance at startup
   # Install Docker
