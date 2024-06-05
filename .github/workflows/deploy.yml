@@ -30,8 +30,8 @@ jobs:
       - name: Reopen container with the latest image
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            docker pull $DOCKER_IMAGE 2>/dev/null
+            docker pull ${{ env.DOCKER_IMAGE }} 2>/dev/null
             docker stop devops-challenge 2>/dev/null
             docker rm devops-challenge 2>/dev/null
-            docker run -d --name devops-challenge $DOCKER_IMAGE
+            docker run -d --name devops-challenge ${{ env.DOCKER_IMAGE }}
           EOF
