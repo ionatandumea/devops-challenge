@@ -1,56 +1,87 @@
-# DevOps Take-Home Challenge
+# 🌟 DevOps Challenge Guide 🌟
 
-## Objective
+## 🚀 Build and Run the Application Locally Using Docker
 
-To assess your skills in continuous integration, continuous deployment, and infrastructure as code, you will complete the following tasks.
-You will deploy this small web application using a CI/CD pipeline, and manage the infrastructure using Terraform.
+### Prerequisites
 
-## Overview
+- 🐳 Docker Engine
 
-You will use Docker to containerize the application, set up a CI/CD pipeline using GitHub Actions, and manage the infrastructure on AWS using Terraform.
+### Steps
 
-## Tasks
+1. **Navigate to your app directory:**
 
-1. **Containerization**
+```bash
+cd /path/to/app
+```
 
-   - Write a Dockerfile to containerize the application.
-   - Ensure the application runs correctly inside the container.
+2. **Build your Docker image:**
 
-2. **Continuous Integration (CI)**
+```bash
+docker build -t devops-challenge .
+```
 
-   - Set up a GitHub repository for your application.
-   - Configure GitHub Actions to:
-     - Automatically build the Docker image upon each commit.
-     - Run a basic lint check or unit test.
+3. **Run your Docker container:**
 
-3. **Infrastructure as Code (IaC)**
+```bash
+docker run -p 3000:3000 devops-challenge
+```
 
-   - Use Terraform to provision the necessary infrastructure on AWS:
-     - An EC2 instance to host your application.
-     - Security group to allow necessary traffic (e.g., port 80 for HTTP).
-   - Ensure the Terraform scripts are modular and reusable.
+🎉 Great! Now you can access the web server at: [http://localhost:3000](http://localhost:3000)
 
-4. **Continuous Deployment (CD)**
-   - Extend the GitHub Actions workflow to:
-     - Push the Docker image to a container registry (e.g., Docker Hub).
-     - Deploy the application to the EC2 instance using the Docker image.
+## 🛠️ Set Up the Infrastructure Using Terraform
 
-## Deliverables
+### Prerequisites
 
-1. **Code Repository:**
+- 🌍 Terraform CLI (>=1.2.0+)
+- ☁️ AWS CLI
+- 🔑 AWS IAM Access Token
 
-   - A fork of this GitHub repository with:
-     - The source code of application.
-     - The Dockerfile.
-     - GitHub Actions workflows.
-     - Terraform scripts.
+### Steps
 
-2. **Documentation:**
-   - A README.md file explaining:
-     - How to build and run the application locally.
-     - How to set up the infrastructure using Terraform.
-     - How to deploy the application using the CI/CD pipeline.
+1. **Create an access token in the IAM section of AWS.**
+2. **Configure your AWS CLI:**
 
-## Submission
+```bash
+aws configure
+```
 
-Submit the link to your GitHub repository to vlad@qed.team.
+3. **Initialize the working directory with Terraform:**
+
+```bash
+terraform init
+```
+
+This downloads and installs the providers specified in the configuration (AWS).
+
+4. **Apply the Terraform configuration:**
+
+```bash
+terraform apply --auto-approve
+```
+
+✨ Good! Your AWS infrastructure has been updated!
+
+## 📦 Deploy the Application Using the CI/CD Pipeline
+
+The CI/CD pipeline is designed to streamline your deployment process. Here's how it works:
+
+1. **Make a change** in your local repository.
+2. **Push the change** to the remote repository.
+
+This triggers GitHub Actions to perform the following:
+
+1. **Build & Push** your application as a Docker Image to Docker Hub.
+2. **Deploy** the updated application by:
+   - Using SSH to log into the remote EC2 instance.
+   - Pulling the latest image from Docker Hub.
+   - Reopening the app container with the latest image.
+
+🎉 That's it! Your application is now updated and deployed.
+
+---
+
+### Task completed by **Ionatan Dumea** with the greatest pleasure for the awesome **QED team**. 🚀🎉
+
+---
+
+Happy Coding! 💻✨
