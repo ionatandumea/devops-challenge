@@ -1,0 +1,37 @@
+name: Deploy To EC2 Instance
+
+on:
+  workflow_run:
+    workflows: ["Build and push image to Docker Hub"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    env:
+      PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      HOSTNAME: ${{secrets.SSH_HOST}}
+      USER: ${{secrets.SSH_USER}}
+      DOCKER_IMAGE: devops-challenge:latest
+      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      DOCKER_TOKEN: ${{ secrets.DOCKER_TOKEN }}
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Deploy to EC2
+        run: |
+          echo "$PRIVATE_KEY" > private_key && chmod 600 private_key
+          ssh -o StrictHostKeyChecking=no -i private_key ${USER}@${HOSTNAME}
+          '
+
+          # Start the deploy .
+          echo ${{ secrets.DOCKER_TOKEN }} | docker login -u $DOCKER_USERNAME --password-stdin
+          docker pull $DOCKER_USERNAME/$DOCKER_IMAGE
+          # Restart the container using the latest image
+          docker stop devops-challenge || true
+          docker rm devops-challenge || true
+          docker run -d -p 80:3000 --name devops-challenge $DOCKER_USERNAME/$DOCKER_IMAGE
+          '
