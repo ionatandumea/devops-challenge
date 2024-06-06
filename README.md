@@ -70,8 +70,9 @@ The CI/CD pipeline is designed to streamline your deployment process. Here's how
 
 This triggers GitHub Actions to perform the following:
 
-1. **Build & Push** your application as a Docker Image to Docker Hub.
-2. **Deploy** the updated application by:
+1. **Unit Tests** to ensure the application code is functioning correctly.
+2. **Build & Push** your application as a Docker Image to Docker Hub.
+3. **Deploy** the updated application by:
    - Using SSH to log into the remote EC2 instance.
    - Pulling the latest image from Docker Hub.
    - Reopening the app container with the latest image.
