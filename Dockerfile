@@ -1,25 +1,25 @@
-FROM node:20-alpine
+FROM node:20-alpine AS builder
 
-# Set the environment variable to production
 ENV NODE_ENV=production
 
-# Create the directory for the application
 WORKDIR /app
 
-# Copy the package.json and yarn.lock files to the container
-COPY package.json /app
-COPY yarn.lock /app
+COPY package.json yarn.lock ./
 
-# Install the dependencies with the frozen-lockfile flag to make sure the yarn.lock file is used
 RUN yarn install
 
-# Copy the rest of the application to the container and add the node user for security reasons
-COPY --chown=node:node . /app
+COPY . .
 
-# Change the user to the node user
+FROM node:20-alpine
+
+ENV NODE_ENV=production
+
+WORKDIR /app
+
+COPY --from=builder /app .
+
 USER node
 
-# Expose the port the app runs on
 EXPOSE 3000
 
 # Start the web server

@@ -14,7 +14,7 @@ jobs:
       DOCKER_IMAGE: ${{ secrets.DOCKER_USERNAME }}/devops-challenge:latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
       - name: Set up SSH
         uses: webfactory/ssh-agent@v0.5.3
@@ -27,11 +27,12 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_TOKEN }}
 
-      - name: Reopen container with the latest image
+      - name: Copy Docker Compose file to remote server
+        run: scp -o StrictHostKeyChecking=no docker-compose.yml ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:/home/${{ secrets.SSH_USER }}/docker-compose.yml
+
+      - name: Deploy with Docker Compose
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            docker pull ${{ env.DOCKER_IMAGE }} 2>/dev/null
-            docker stop devops-challenge 2>/dev/null
-            docker rm devops-challenge 2>/dev/null
-            docker run -d --name devops-challenge ${{ env.DOCKER_IMAGE }}
+            cd /home/${{ secrets.SSH_USER }}
+            docker-compose up -d
           EOF
